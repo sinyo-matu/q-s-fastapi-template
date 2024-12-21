@@ -13,3 +13,6 @@ dev:
 run:
    uv run fastapi run src/main.py --workers={{num_cpus()}} --port 8080
 
+test:
+   uv run pytest --capture=no
+   

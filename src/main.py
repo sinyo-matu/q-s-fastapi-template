@@ -3,30 +3,25 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from lib.utils import add
+
 app = FastAPI()
 
 
-class Item(BaseModel):
-    """Item model"""
-
-    name: str
-    price: float
-    is_offer: bool | None = None
+@app.get("/health_check")
+def health_check():
+    """Health check endpoint"""
+    return "ok"
 
 
-@app.get("/")
-def read_root():
-    """Root endpoint"""
-    return {"Hello": "World"}
+class AddRequest(BaseModel):
+    """Add request model"""
+
+    a: int
+    b: int
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    """Read item endpoint"""
-    return {"item_id": item_id, "q": q}
-
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    """Update item endpoint"""
-    return {"item_name": item.name, "item_id": item_id}
+@app.post("/add")
+def add_endpoint(request: AddRequest):
+    """Add endpoint"""
+    return {"result": add(request.a, request.b)}
