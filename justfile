@@ -7,12 +7,15 @@ setup:
 check:
    ruff check --fix .
 
-dev:
+sync:
+   uv sync --frozen
+
+dev: sync
    uv run fastapi dev src/main.py
 
-run:
+run: sync
    uv run fastapi run src/main.py --workers={{num_cpus()}} --port 8080
 
-test:
+test: sync
    uv run pytest --capture=no
    
